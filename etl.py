@@ -12,6 +12,7 @@ def getDataFromAPI():
     headers = {
     'Content-Type': 'application/json'
     }
+
     requestResponse = requests.get(f"https://api.tiingo.com/tiingo/daily/aapl/prices?startDate=2014-05-20&token="
                                f"{os.getenv('API_TOKEN')}", headers=headers)
 
