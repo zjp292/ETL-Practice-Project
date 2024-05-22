@@ -3,10 +3,10 @@ from dotenv import load_dotenv, dotenv_values
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
-from sqlalchemy import create_engine
 import pyodbc
 
 load_dotenv()
+
 
 def getDataFromAPI():
     headers = {
@@ -17,14 +17,12 @@ def getDataFromAPI():
 
     hist_df = pd.DataFrame(requestResponse.json())
 
-    print(hist_df.tail())
-    hist_df.dropna()
     return hist_df
 
+
+# function intended for future work
 def plotData(df):
     df['adjClose'].plot(figsize=(10,7))
-    # plt.ylabel('adjClose', fontsize=14)
-    # plt.xlabel('date', fontsize=14)
 
     plt.show()
 
@@ -32,20 +30,13 @@ def plotData(df):
 def loadDataIntoDb(df, dbServer, database):
     driver = '{ODBC Driver 17 for SQL Server}'
     conn = pyodbc.connect(f'DRIVER={driver};SERVER={dbServer};DATABASE={database};Trusted_Connection=yes;')
-    #cursor = conn.cursor()
 
-    # Create the connection string
-    #engine = create_engine('mssql+pyodbc://@' + dbServer + '/' + database + '?trusted_connection=yes&driver=ODBC+Driver+17+for+SQL+Server')
-    # Print connection string for debugging
-    #print(f'Connection string from loadDataIntoDb: {connection_string}')
-
-    # Create an SQLAlchemy engine
-    #engine = create_engine(connection_string)
-
+    # loop over each row in dataframe, insert into sql table
     for index, row in df.iterrows():
+        # create cursor for each row
         cursor = conn.cursor()
 
-        # Extract values from the DataFrame row
+        # take out values from df
         date_value = row['date']
         close_value = row['close']
         high_value = row['high']
@@ -68,13 +59,15 @@ def loadDataIntoDb(df, dbServer, database):
         date_value, close_value, high_value, low_value, open_value, volume_value, adjClose_value, adjHigh_value, adjLow_value,
         adjOpen_value, adjVolume_value, divCash_value, splitFactor_value))
 
-        # Commit the transaction
+        # catch any exceptions
         try:
             conn.commit()
+
         except Exception as e:
             print(f' [ - ] Failed to commit: {e}')
 
-        # Close cursor
+        # close cursors
         cursor.close()
     conn.close()
-    print(' [ + ] All data added to table')
+
+    print(' [ + ] loadDataIntoDb Complete ')

@@ -1,16 +1,10 @@
 import pyodbc
+import os
 
-
-server = '(LocalDb)\MSSQLLocalDB'  # Replace with your server name
-database = 'ETL_Db'  # Replace with your database name
-driver = '{ODBC Driver 17 for SQL Server}'  # Make sure you have the appropriate driver installed
-
-
-
-conn = pyodbc.connect(f'DRIVER={driver};SERVER={server};DATABASE={database};Trusted_Connection=yes;')
+conn = pyodbc.connect(f'DRIVER={os.getenv("driver")};SERVER={os.getenv("server")};DATABASE={os.getenv("database")};Trusted_Connection=yes;')
 cursor = conn.cursor()
 
-
+# creates a sql table for dataframe row values
 create_table_sql = """
 CREATE TABLE StockData (
     date DATE PRIMARY KEY,
@@ -29,9 +23,10 @@ CREATE TABLE StockData (
 )
 """
 
+# run the sql query
 cursor.execute(create_table_sql)
 
-# commit the changes to the table
+# create table and close the connections/cursor
 conn.commit()
 cursor.close()
 conn.close()
