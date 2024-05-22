@@ -27,7 +27,7 @@ hist_df['adjClose'].plot(figsize=(10,7))
 # plt.xlabel('date', fontsize=14)
 
 plt.show()
-
+#
 # date
 # close
 # high
