@@ -9,6 +9,10 @@
 - matplotlib - Used for plotting (WIP)
 ---
 
+![image](https://github.com/zjp292/ETL-Practice-Project/assets/72166103/e022d208-8289-4240-84c4-2f0774009b72)
+
+![image](https://github.com/zjp292/ETL-Practice-Project/assets/72166103/ad89d8c7-75cb-453b-a432-fce30ac04cc2)
+
 ---
 ## Extract
 The extraction process started with the Tiingo API. I collected historical Apple stock data from the dates **2014-05-20** to **2024-05-21**. 
