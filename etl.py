@@ -28,9 +28,11 @@ def plotData(df):
     plt.show()
 
 
-def loadDataIntoDb(df, dbServer, database):
+def loadDataIntoDb(df, dbserver, database):
     driver = '{ODBC Driver 17 for SQL Server}'
-    conn = pyodbc.connect(f'DRIVER={driver};SERVER={dbServer};DATABASE={database};Trusted_Connection=yes;')
+    conn_string = f'DRIVER={driver};SERVER={dbserver};DATABASE={database};Trusted_Connection=yes;'
+
+    conn = pyodbc.connect(conn_string)
 
     # loop over each row in dataframe, insert into sql table
     for index, row in df.iterrows():

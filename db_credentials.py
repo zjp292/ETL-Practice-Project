@@ -1,5 +1,8 @@
 import pyodbc
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 conn = pyodbc.connect(f'DRIVER={os.getenv("driver")};SERVER={os.getenv("server")};DATABASE={os.getenv("database")};Trusted_Connection=yes;')
 cursor = conn.cursor()
